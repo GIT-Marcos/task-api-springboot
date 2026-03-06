@@ -1,0 +1,27 @@
+# =========== CRUDS ===========
+
+### Carga de tarea
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "description": "Test de tarea compras 4"
+}
+
+### Edición de tarea
+@idForUpdate = 4
+PUT http://localhost:8080/api/tasks/{{idForUpdate}}
+Content-Type: application/json
+
+{
+  "description": "Test de tarea compras 1",
+  "completed": true
+}
+
+### Eliminación de tarea
+@idForDelete = 1
+DELETE http://localhost:8080/api/tasks/{{idForDelete}}
+
+### Ver todas
+GET http://localhost:8080/api/tasks
+
