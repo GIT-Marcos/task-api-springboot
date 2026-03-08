@@ -46,12 +46,12 @@ public class TaskController {
     // ========================= LECTURA ============================
 
     @GetMapping("/filters")
-    public ResponseEntity<List<TaskResponseDTO>> findByDescription(@RequestParam(required = false) String description,
-                                                                   @RequestParam(required = false) LocalDate minDate,
-                                                                   @RequestParam(required = false) LocalDate maxDate,
-                                                                   @RequestParam(required = false) Boolean completed) {
+    public ResponseEntity<List<TaskResponseDTO>> findByFilters(@RequestParam(required = false) String description,
+                                                               @RequestParam(required = false) LocalDate minDate,
+                                                               @RequestParam(required = false) LocalDate maxDate,
+                                                               @RequestParam(required = false) Boolean completed) {
         TaskFilterDTO filter = new TaskFilterDTO(description, minDate, maxDate, completed);
-        return ResponseEntity.ok(serv.findByDescription(filter));
+        return ResponseEntity.ok(serv.findByFilters(filter));
     }
 
     @GetMapping

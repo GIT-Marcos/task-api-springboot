@@ -1,0 +1,54 @@
+package unit;
+
+import com.usuario.todolist.dto.TaskFilterDTO;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class TaskFilterDTOTest {
+
+    @Test
+    void constructor_WithNullDescription_RemainsNull() {
+        TaskFilterDTO filter = new TaskFilterDTO(null, (LocalDateTime) null, null, null);
+
+        assertThat(filter.description()).isNull();
+    }
+
+    @Test
+    void constructor_WithBlankDescription_StripsToEmpty() {
+        TaskFilterDTO filter = new TaskFilterDTO("   ", (LocalDateTime) null, null, null);
+
+        assertThat(filter.description()).isEmpty();
+    }
+
+    @Test
+    void constructor_WithWhitespace_NormalizesSpaces() {
+        TaskFilterDTO filter = new TaskFilterDTO("  Tarea   importante  ",
+                (LocalDateTime) null, null, null);
+
+        assertThat(filter.description()).isEqualTo("Tarea importante");
+    }
+
+    @Test
+    void constructor_WithLocalDates_ConvertsToStartAndEndOfDay() {
+        LocalDate minDate = LocalDate.of(2024, 1, 1);
+        LocalDate maxDate = LocalDate.of(2024, 12, 31);
+
+        TaskFilterDTO filter = new TaskFilterDTO("test", minDate, maxDate, true);
+
+        assertThat(filter.minDate()).isEqualTo(minDate.atStartOfDay());
+        assertThat(filter.maxDate()).isEqualTo(maxDate.atTime(LocalTime.MAX));
+    }
+
+    @Test
+    void constructor_WithNullDates_RemainsNull() {
+        TaskFilterDTO filter = new TaskFilterDTO("test", (LocalDate) null, null, null);
+
+        assertThat(filter.minDate()).isNull();
+        assertThat(filter.maxDate()).isNull();
+    }
+}

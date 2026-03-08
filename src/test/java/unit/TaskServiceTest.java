@@ -12,14 +12,15 @@ import com.usuario.todolist.service.TaskService;
 import com.usuario.todolist.util.TaskMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -292,112 +293,105 @@ class TaskServiceTest {
         verify(repo, times(1)).findAll();
     }
 
-// ========================= FIND BY DESCRIPTION (FILTERS) ============================
+// ========================= FIND BY FILTERS ============================
 
     @Test
-    void findByDescription_WithAllFilters_ReturnsFilteredTasks() {
-        // Preparar
-        String description = "Tarea";
-        LocalDate minDate = LocalDate.of(2024, 1, 1);
-        LocalDate maxDate = LocalDate.of(2024, 12, 31);
-        Boolean completed = true;
-        TaskFilterDTO filter = new TaskFilterDTO(description, minDate, maxDate, completed);
+    void findByFilters_WithAllFilters_ReturnsFilteredTasks() {
+        // Arrange
+        TaskFilterDTO filter = new TaskFilterDTO("Tarea",
+                LocalDate.of(2024, 1, 1),
+                LocalDate.of(2024, 12, 31),
+                true);
 
-        LocalDateTime minDateTime = minDate.atStartOfDay();
-        LocalDateTime maxDateTime = maxDate.atTime(LocalTime.MAX);
+        Task task = new Task("Tarea 1");
+        task.setId(1L);
+        List<Task> tasks = List.of(task);
 
-        Task task1 = new Task("Tarea 1");
-        task1.setId(1L);
-        List<Task> tasks = List.of(task1);
-        List<TaskResponseDTO> expectedResponse = List.of(
+        List<TaskResponseDTO> expected = List.of(
                 new TaskResponseDTO(1L, "Tarea 1", true, LocalDateTime.now())
         );
 
-        // Comportar
-        when(repo.findByFilters(description, minDateTime, maxDateTime, completed)).thenReturn(tasks);
-        when(mapper.toResponseDTO(tasks)).thenReturn(expectedResponse);
+        when(repo.findAll(ArgumentMatchers.<Specification<Task>>any())).thenReturn(tasks);
+        when(mapper.toResponseDTO(tasks)).thenReturn(expected);
 
-        // Ejecutar
-        List<TaskResponseDTO> actualResponse = taskService.findByDescription(filter);
+        // Act
+        List<TaskResponseDTO> result = taskService.findByFilters(filter);
 
-        // Asegurar
-        assertThat(actualResponse).isNotNull();
-        assertThat(actualResponse).hasSize(1);
-
-        // Verificar
-        verify(repo, times(1)).findByFilters(description, minDateTime, maxDateTime, completed);
+        // Assert
+        assertThat(result).isNotNull().hasSize(1).isEqualTo(expected);
+        verify(repo).findAll(ArgumentMatchers.<Specification<Task>>any());
+        verify(mapper).toResponseDTO(tasks);
     }
 
     @Test
-    void findByDescription_WithBlankDescription_SetsDescriptionToNull() {
-        // Preparar
-        TaskFilterDTO filter = new TaskFilterDTO("   ", null, null, null);
-        List<Task> tasks = List.of();
-        List<TaskResponseDTO> expectedResponse = List.of();
+    void findByFilters_WithNoMatches_ReturnsEmptyList() {
+        // Arrange
+        TaskFilterDTO filter = new TaskFilterDTO("Inexistente", (LocalDateTime) null, null, null);
+        List<Task> emptyTasks = List.of();
+        List<TaskResponseDTO> emptyResponse = List.of();
 
-        // Comportar
-        when(repo.findByFilters(null, null, null, null)).thenReturn(tasks);
-        when(mapper.toResponseDTO(tasks)).thenReturn(expectedResponse);
+        when(repo.findAll(ArgumentMatchers.<Specification<Task>>any())).thenReturn(emptyTasks);
+        when(mapper.toResponseDTO(emptyTasks)).thenReturn(emptyResponse);
 
-        // Ejecutar
-        List<TaskResponseDTO> actualResponse = taskService.findByDescription(filter);
+        // Act
+        List<TaskResponseDTO> result = taskService.findByFilters(filter);
 
-        // Asegurar
-        assertThat(actualResponse).isNotNull();
-        assertThat(actualResponse).isEmpty();
-
-        // Verificar
-        verify(repo, times(1)).findByFilters(null, null, null, null);
+        // Assert
+        assertThat(result).isNotNull().isEmpty();
+        verify(repo).findAll(ArgumentMatchers.<Specification<Task>>any());
+        verify(mapper).toResponseDTO(emptyTasks);
     }
 
     @Test
-    void findByDescription_WithNullDescription_SetsDescriptionToNull() {
-        // Preparar
-        TaskFilterDTO filter = new TaskFilterDTO(null, null, null, false);
-        List<Task> tasks = List.of();
-        List<TaskResponseDTO> expectedResponse = List.of();
+    void findByFilters_WithNullFilters_DelegatesToRepoAndMapper() {
+        // Arrange
+        TaskFilterDTO filter = new TaskFilterDTO(null, (LocalDateTime) null, null, null);
 
-        // Comportar
-        when(repo.findByFilters(null, null, null, false)).thenReturn(tasks);
-        when(mapper.toResponseDTO(tasks)).thenReturn(expectedResponse);
-
-        // Ejecutar
-        List<TaskResponseDTO> actualResponse = taskService.findByDescription(filter);
-
-        // Asegurar
-        assertThat(actualResponse).isNotNull();
-        assertThat(actualResponse).isEmpty();
-
-        // Verificar
-        verify(repo, times(1)).findByFilters(null, null, null, false);
-    }
-
-    @Test
-    void findByDescription_WithDescriptionOnly_StripsAndFilters() {
-        // Preparar
-        String rawDescription = "  Tarea  ";
-        String strippedDescription = "Tarea";
-        TaskFilterDTO filter = new TaskFilterDTO(rawDescription, null, null, null);
-
-        Task task1 = new Task("Tarea importante");
+        Task task1 = new Task("Tarea 1");
         task1.setId(1L);
-        List<Task> tasks = List.of(task1);
-        List<TaskResponseDTO> expectedResponse = List.of(
+        Task task2 = new Task("Tarea 2");
+        task2.setId(2L);
+        List<Task> tasks = List.of(task1, task2);
+
+        List<TaskResponseDTO> expected = List.of(
+                new TaskResponseDTO(1L, "Tarea 1", false, LocalDateTime.now()),
+                new TaskResponseDTO(2L, "Tarea 2", false, LocalDateTime.now())
+        );
+
+        when(repo.findAll(ArgumentMatchers.<Specification<Task>>any())).thenReturn(tasks);
+        when(mapper.toResponseDTO(tasks)).thenReturn(expected);
+
+        // Act
+        List<TaskResponseDTO> result = taskService.findByFilters(filter);
+
+        // Assert
+        assertThat(result).isNotNull().hasSize(2);
+        verify(repo).findAll(ArgumentMatchers.<Specification<Task>>any());
+        verify(mapper).toResponseDTO(tasks);
+    }
+
+    @Test
+    void findByFilters_WithPartialFilters_ReturnsMatchingTasks() {
+        // Arrange
+        TaskFilterDTO filter = new TaskFilterDTO("Tarea", (LocalDateTime) null, null, false);
+
+        Task task = new Task("Tarea importante");
+        task.setId(1L);
+        List<Task> tasks = List.of(task);
+
+        List<TaskResponseDTO> expected = List.of(
                 new TaskResponseDTO(1L, "Tarea importante", false, LocalDateTime.now())
         );
 
-        // Comportar
-        when(repo.findByFilters(strippedDescription, null, null, null)).thenReturn(tasks);
-        when(mapper.toResponseDTO(tasks)).thenReturn(expectedResponse);
+        when(repo.findAll(ArgumentMatchers.<Specification<Task>>any())).thenReturn(tasks);
+        when(mapper.toResponseDTO(tasks)).thenReturn(expected);
 
-        // Ejecutar
-        List<TaskResponseDTO> actualResponse = taskService.findByDescription(filter);
+        // Act
+        List<TaskResponseDTO> result = taskService.findByFilters(filter);
 
-        // Asegurar
-        assertThat(actualResponse).isNotNull();
-        assertThat(actualResponse).hasSize(1);
-
-        // Verificar
-        verify(repo, times(1)).findByFilters(strippedDescription, null, null, null);
+        // Assert
+        assertThat(result).isNotNull().hasSize(1).isEqualTo(expected);
+        verify(repo).findAll(ArgumentMatchers.<Specification<Task>>any());
+        verify(mapper).toResponseDTO(tasks);
     }
 }
