@@ -1,6 +1,6 @@
 package com.usuario.todolist.service;
 
-import com.usuario.todolist.TaskSpecification;
+import com.usuario.todolist.specification.TaskSpecification;
 import com.usuario.todolist.exception.DuplicatedTaskException;
 import com.usuario.todolist.util.TaskMapper;
 import com.usuario.todolist.dto.TaskCreateDTO;
