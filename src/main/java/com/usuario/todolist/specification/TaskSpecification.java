@@ -1,4 +1,4 @@
-package com.usuario.todolist;
+package com.usuario.todolist.specification;
 
 import com.usuario.todolist.dto.TaskFilterDTO;
 import com.usuario.todolist.entity.Task;
