@@ -1,5 +1,6 @@
 package com.usuario.todolist.service;
 
+import com.usuario.todolist.TaskSpecification;
 import com.usuario.todolist.exception.DuplicatedTaskException;
 import com.usuario.todolist.util.TaskMapper;
 import com.usuario.todolist.dto.TaskCreateDTO;
@@ -11,10 +12,9 @@ import com.usuario.todolist.exception.TaskNotFoundException;
 import com.usuario.todolist.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -72,19 +72,9 @@ public class TaskService {
         return mapper.toResponseDTO(repo.findAll());
     }
 
-    public List<TaskResponseDTO> findByDescription(TaskFilterDTO filter) {
-        String desc = (filter.description() != null && !filter.description().isBlank())
-                ? filter.description().strip() : null;
-
-        LocalDateTime minDate = (filter.minDate() != null)
-                ? filter.minDate().atStartOfDay() : null;
-
-        LocalDateTime maxDate = (filter.maxDate() != null)
-                ? filter.maxDate().atTime(LocalTime.MAX) : null;
-
-        Boolean completed = filter.completed();
-
-        return mapper.toResponseDTO(repo.findByFilters(desc, minDate, maxDate, completed));
+    public List<TaskResponseDTO> findByFilters(TaskFilterDTO filter) {
+        Specification<Task> spec = TaskSpecification.buildFilter(filter);
+        return mapper.toResponseDTO(repo.findAll(spec));
     }
 
     // ========================= PRIVADOS ============================
