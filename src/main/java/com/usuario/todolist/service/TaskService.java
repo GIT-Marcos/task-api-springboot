@@ -3,10 +3,10 @@ package com.usuario.todolist.service;
 import com.usuario.todolist.specification.TaskSpecification;
 import com.usuario.todolist.exception.DuplicatedTaskException;
 import com.usuario.todolist.util.TaskMapper;
-import com.usuario.todolist.dto.TaskCreateDTO;
-import com.usuario.todolist.dto.TaskFilterDTO;
-import com.usuario.todolist.dto.TaskResponseDTO;
-import com.usuario.todolist.dto.TaskUpdateDTO;
+import com.usuario.todolist.dto.TaskCreateRequest;
+import com.usuario.todolist.dto.TaskFilterRequest;
+import com.usuario.todolist.dto.TaskResponse;
+import com.usuario.todolist.dto.TaskUpdateRequest;
 import com.usuario.todolist.entity.Task;
 import com.usuario.todolist.exception.TaskNotFoundException;
 import com.usuario.todolist.repository.TaskRepository;
@@ -29,7 +29,7 @@ public class TaskService {
         this.mapper = mapper;
     }
 
-    public TaskResponseDTO save(TaskCreateDTO dto) {
+    public TaskResponse save(TaskCreateRequest dto) {
         validateDescriptionUnicity(dto.description());
 
         try {
@@ -41,7 +41,7 @@ public class TaskService {
         }
     }
 
-    public TaskResponseDTO update(Long id, TaskUpdateDTO tDTO) {
+    public TaskResponse update(Long id, TaskUpdateRequest tDTO) {
         Task managedTask = repo.findById(id).orElseThrow(
                 () -> new TaskNotFoundException(id)
         );
@@ -68,11 +68,11 @@ public class TaskService {
 
     // ========================= LECTURA ============================
 
-    public List<TaskResponseDTO> findAll() {
+    public List<TaskResponse> findAll() {
         return mapper.toResponseDTO(repo.findAll());
     }
 
-    public List<TaskResponseDTO> findByFilters(TaskFilterDTO filter) {
+    public List<TaskResponse> findByFilters(TaskFilterRequest filter) {
         Specification<Task> spec = TaskSpecification.buildFilter(filter);
         return mapper.toResponseDTO(repo.findAll(spec));
     }

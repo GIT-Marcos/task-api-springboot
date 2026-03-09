@@ -28,3 +28,14 @@ Una API RESTful simple construida con Spring Boot para la gestión de tareas.
    ignorado por git por seguridad).
 6. Reemplazar `NOMBRE_USUARIO` y `CONTRASEÑA` con tus credenciales de Postgres locales.
 7. Ejecutar el proyecto.
+
+## 📚 Documentación de la API (Swagger UI)
+
+La API está completamente autodocumentada utilizando Springdoc OpenAPI. Una vez que la aplicación esté en ejecución,
+es posible explorar, visualizar y probar todos los endpoints directamente desde el navegador:
+
+🌐 Interfaz Gráfica (Swagger UI):
+http://localhost:8080/docs
+
+📄 Especificación OpenAPI (JSON puro):
+http://localhost:8080/api-docs

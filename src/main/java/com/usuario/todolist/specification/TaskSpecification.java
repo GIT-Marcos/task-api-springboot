@@ -1,6 +1,6 @@
 package com.usuario.todolist.specification;
 
-import com.usuario.todolist.dto.TaskFilterDTO;
+import com.usuario.todolist.dto.TaskFilterRequest;
 import com.usuario.todolist.entity.Task;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TaskSpecification {
 
-    public static Specification<Task> buildFilter(TaskFilterDTO filter) {
+    public static Specification<Task> buildFilter(TaskFilterRequest filter) {
         return (root, query, criteriaBuilder) -> {
 
             List<Predicate> predicates = new ArrayList<>();
