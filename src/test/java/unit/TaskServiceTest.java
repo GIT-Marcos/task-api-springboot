@@ -1,9 +1,9 @@
 package unit;
 
-import com.usuario.todolist.dto.TaskCreateDTO;
-import com.usuario.todolist.dto.TaskFilterDTO;
-import com.usuario.todolist.dto.TaskResponseDTO;
-import com.usuario.todolist.dto.TaskUpdateDTO;
+import com.usuario.todolist.dto.TaskCreateRequest;
+import com.usuario.todolist.dto.TaskFilterRequest;
+import com.usuario.todolist.dto.TaskResponse;
+import com.usuario.todolist.dto.TaskUpdateRequest;
 import com.usuario.todolist.entity.Task;
 import com.usuario.todolist.exception.DuplicatedTaskException;
 import com.usuario.todolist.exception.TaskNotFoundException;
@@ -46,11 +46,11 @@ class TaskServiceTest {
     void save_ValidTask_ReturnsSavedTaskDTO() {
         // Preparar
         String description = "Testear";
-        TaskCreateDTO createDTO = new TaskCreateDTO(description);
+        TaskCreateRequest createDTO = new TaskCreateRequest(description);
         Task entityToSave = new Task(description);
         Task savedEntity = new Task(description);
         savedEntity.setId(1L);
-        TaskResponseDTO expectedResponse = new TaskResponseDTO(1L, description, false, LocalDateTime.now());
+        TaskResponse expectedResponse = new TaskResponse(1L, description, false, LocalDateTime.now());
 
         // Comportar
         when(repo.existsByDescription(description)).thenReturn(false);
@@ -59,7 +59,7 @@ class TaskServiceTest {
         when(mapper.toResponseDTO(savedEntity)).thenReturn(expectedResponse);
 
         // Ejecutar
-        TaskResponseDTO actualResponse = taskService.save(createDTO);
+        TaskResponse actualResponse = taskService.save(createDTO);
 
         // Asegurar
         assertThat(actualResponse).isNotNull();
@@ -74,7 +74,7 @@ class TaskServiceTest {
     void save_DuplicatedDescription_ThrowsDuplicateTaskException() {
         // Preparar
         String duplicatedDescription = "Tarea Duplicada";
-        TaskCreateDTO createDTO = new TaskCreateDTO(duplicatedDescription);
+        TaskCreateRequest createDTO = new TaskCreateRequest(duplicatedDescription);
 
         // Comportar
         when(repo.existsByDescription(duplicatedDescription)).thenReturn(true);
@@ -94,7 +94,7 @@ class TaskServiceTest {
     void save_DataIntegrityViolation_ThrowsDuplicatedTaskException() {
         // Preparar
         String description = "Tarea concurrente";
-        TaskCreateDTO createDTO = new TaskCreateDTO(description);
+        TaskCreateRequest createDTO = new TaskCreateRequest(description);
         Task entityToSave = new Task(description);
 
         // Comportar
@@ -117,13 +117,13 @@ class TaskServiceTest {
         // Preparar
         Long id = 1L;
         String newDescription = "Tarea actualizada";
-        TaskUpdateDTO updateDTO = new TaskUpdateDTO(newDescription, true);
+        TaskUpdateRequest updateDTO = new TaskUpdateRequest(newDescription, true);
         Task managedTask = new Task("Tarea original");
         managedTask.setId(id);
         Task updatedTask = new Task(newDescription);
         updatedTask.setId(id);
         updatedTask.setCompleted(true);
-        TaskResponseDTO expectedResponse = new TaskResponseDTO(id, newDescription, true, LocalDateTime.now());
+        TaskResponse expectedResponse = new TaskResponse(id, newDescription, true, LocalDateTime.now());
 
         // Comportar
         when(repo.findById(id)).thenReturn(Optional.of(managedTask));
@@ -133,7 +133,7 @@ class TaskServiceTest {
         when(mapper.toResponseDTO(updatedTask)).thenReturn(expectedResponse);
 
         // Ejecutar
-        TaskResponseDTO actualResponse = taskService.update(id, updateDTO);
+        TaskResponse actualResponse = taskService.update(id, updateDTO);
 
         // Asegurar
         assertThat(actualResponse).isNotNull();
@@ -149,7 +149,7 @@ class TaskServiceTest {
     void update_TaskNotFound_ThrowsTaskNotFoundException() {
         // Preparar
         Long id = 99L;
-        TaskUpdateDTO updateDTO = new TaskUpdateDTO("Cualquier cosa", false);
+        TaskUpdateRequest updateDTO = new TaskUpdateRequest("Cualquier cosa", false);
 
         // Comportar
         when(repo.findById(id)).thenReturn(Optional.empty());
@@ -167,7 +167,7 @@ class TaskServiceTest {
         // Preparar
         Long id = 1L;
         String duplicatedDescription = "Tarea Duplicada";
-        TaskUpdateDTO updateDTO = new TaskUpdateDTO(duplicatedDescription, false);
+        TaskUpdateRequest updateDTO = new TaskUpdateRequest(duplicatedDescription, false);
         Task managedTask = new Task("Tarea original");
         managedTask.setId(id);
 
@@ -191,7 +191,7 @@ class TaskServiceTest {
         // Preparar
         Long id = 1L;
         String description = "Tarea concurrente";
-        TaskUpdateDTO updateDTO = new TaskUpdateDTO(description, false);
+        TaskUpdateRequest updateDTO = new TaskUpdateRequest(description, false);
         Task managedTask = new Task("Tarea original");
         managedTask.setId(id);
 
@@ -252,9 +252,9 @@ class TaskServiceTest {
         Task task2 = new Task("Tarea 2");
         task2.setId(2L);
         List<Task> tasks = List.of(task1, task2);
-        List<TaskResponseDTO> expectedResponse = List.of(
-                new TaskResponseDTO(1L, "Tarea 1", false, LocalDateTime.now()),
-                new TaskResponseDTO(2L, "Tarea 2", false, LocalDateTime.now())
+        List<TaskResponse> expectedResponse = List.of(
+                new TaskResponse(1L, "Tarea 1", false, LocalDateTime.now()),
+                new TaskResponse(2L, "Tarea 2", false, LocalDateTime.now())
         );
 
         // Comportar
@@ -262,7 +262,7 @@ class TaskServiceTest {
         when(mapper.toResponseDTO(tasks)).thenReturn(expectedResponse);
 
         // Ejecutar
-        List<TaskResponseDTO> actualResponse = taskService.findAll();
+        List<TaskResponse> actualResponse = taskService.findAll();
 
         // Asegurar
         assertThat(actualResponse).isNotNull();
@@ -276,14 +276,14 @@ class TaskServiceTest {
     void findAll_NoTasks_ReturnsEmptyList() {
         // Preparar
         List<Task> emptyList = List.of();
-        List<TaskResponseDTO> expectedResponse = List.of();
+        List<TaskResponse> expectedResponse = List.of();
 
         // Comportar
         when(repo.findAll()).thenReturn(emptyList);
         when(mapper.toResponseDTO(emptyList)).thenReturn(expectedResponse);
 
         // Ejecutar
-        List<TaskResponseDTO> actualResponse = taskService.findAll();
+        List<TaskResponse> actualResponse = taskService.findAll();
 
         // Asegurar
         assertThat(actualResponse).isNotNull();
@@ -298,7 +298,7 @@ class TaskServiceTest {
     @Test
     void findByFilters_WithAllFilters_ReturnsFilteredTasks() {
         // Arrange
-        TaskFilterDTO filter = new TaskFilterDTO("Tarea",
+        TaskFilterRequest filter = new TaskFilterRequest("Tarea",
                 LocalDate.of(2024, 1, 1),
                 LocalDate.of(2024, 12, 31),
                 true);
@@ -307,15 +307,15 @@ class TaskServiceTest {
         task.setId(1L);
         List<Task> tasks = List.of(task);
 
-        List<TaskResponseDTO> expected = List.of(
-                new TaskResponseDTO(1L, "Tarea 1", true, LocalDateTime.now())
+        List<TaskResponse> expected = List.of(
+                new TaskResponse(1L, "Tarea 1", true, LocalDateTime.now())
         );
 
         when(repo.findAll(ArgumentMatchers.<Specification<Task>>any())).thenReturn(tasks);
         when(mapper.toResponseDTO(tasks)).thenReturn(expected);
 
         // Act
-        List<TaskResponseDTO> result = taskService.findByFilters(filter);
+        List<TaskResponse> result = taskService.findByFilters(filter);
 
         // Assert
         assertThat(result).isNotNull().hasSize(1).isEqualTo(expected);
@@ -326,15 +326,15 @@ class TaskServiceTest {
     @Test
     void findByFilters_WithNoMatches_ReturnsEmptyList() {
         // Arrange
-        TaskFilterDTO filter = new TaskFilterDTO("Inexistente", (LocalDateTime) null, null, null);
+        TaskFilterRequest filter = new TaskFilterRequest("Inexistente", (LocalDateTime) null, null, null);
         List<Task> emptyTasks = List.of();
-        List<TaskResponseDTO> emptyResponse = List.of();
+        List<TaskResponse> emptyResponse = List.of();
 
         when(repo.findAll(ArgumentMatchers.<Specification<Task>>any())).thenReturn(emptyTasks);
         when(mapper.toResponseDTO(emptyTasks)).thenReturn(emptyResponse);
 
         // Act
-        List<TaskResponseDTO> result = taskService.findByFilters(filter);
+        List<TaskResponse> result = taskService.findByFilters(filter);
 
         // Assert
         assertThat(result).isNotNull().isEmpty();
@@ -345,7 +345,7 @@ class TaskServiceTest {
     @Test
     void findByFilters_WithNullFilters_DelegatesToRepoAndMapper() {
         // Arrange
-        TaskFilterDTO filter = new TaskFilterDTO(null, (LocalDateTime) null, null, null);
+        TaskFilterRequest filter = new TaskFilterRequest(null, (LocalDateTime) null, null, null);
 
         Task task1 = new Task("Tarea 1");
         task1.setId(1L);
@@ -353,16 +353,16 @@ class TaskServiceTest {
         task2.setId(2L);
         List<Task> tasks = List.of(task1, task2);
 
-        List<TaskResponseDTO> expected = List.of(
-                new TaskResponseDTO(1L, "Tarea 1", false, LocalDateTime.now()),
-                new TaskResponseDTO(2L, "Tarea 2", false, LocalDateTime.now())
+        List<TaskResponse> expected = List.of(
+                new TaskResponse(1L, "Tarea 1", false, LocalDateTime.now()),
+                new TaskResponse(2L, "Tarea 2", false, LocalDateTime.now())
         );
 
         when(repo.findAll(ArgumentMatchers.<Specification<Task>>any())).thenReturn(tasks);
         when(mapper.toResponseDTO(tasks)).thenReturn(expected);
 
         // Act
-        List<TaskResponseDTO> result = taskService.findByFilters(filter);
+        List<TaskResponse> result = taskService.findByFilters(filter);
 
         // Assert
         assertThat(result).isNotNull().hasSize(2);
@@ -373,21 +373,21 @@ class TaskServiceTest {
     @Test
     void findByFilters_WithPartialFilters_ReturnsMatchingTasks() {
         // Arrange
-        TaskFilterDTO filter = new TaskFilterDTO("Tarea", (LocalDateTime) null, null, false);
+        TaskFilterRequest filter = new TaskFilterRequest("Tarea", (LocalDateTime) null, null, false);
 
         Task task = new Task("Tarea importante");
         task.setId(1L);
         List<Task> tasks = List.of(task);
 
-        List<TaskResponseDTO> expected = List.of(
-                new TaskResponseDTO(1L, "Tarea importante", false, LocalDateTime.now())
+        List<TaskResponse> expected = List.of(
+                new TaskResponse(1L, "Tarea importante", false, LocalDateTime.now())
         );
 
         when(repo.findAll(ArgumentMatchers.<Specification<Task>>any())).thenReturn(tasks);
         when(mapper.toResponseDTO(tasks)).thenReturn(expected);
 
         // Act
-        List<TaskResponseDTO> result = taskService.findByFilters(filter);
+        List<TaskResponse> result = taskService.findByFilters(filter);
 
         // Assert
         assertThat(result).isNotNull().hasSize(1).isEqualTo(expected);
