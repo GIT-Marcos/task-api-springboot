@@ -16,8 +16,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleTaskNotFoundException(TaskNotFoundException ex, WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
                 "about:blank",
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                HttpStatus.NOT_FOUND.value(),
+                ex.getStatus().getReasonPhrase(),
+                ex.getStatus().value(),
                 ex.getMessage(),
                 request.getDescription(false)
         );

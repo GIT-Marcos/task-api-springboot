@@ -4,14 +4,14 @@ import com.usuario.todolist.entity.Task;
 
 import java.time.LocalDateTime;
 
-public record TaskResponseDTO(
+public record TaskResponse(
         Long id,
         String description,
         Boolean completed,
         LocalDateTime creationDate
 ) {
 
-    public TaskResponseDTO(Task task) {
+    public TaskResponse(Task task) {
         this(
                 task.getId(),
                 task.getDescription(),
