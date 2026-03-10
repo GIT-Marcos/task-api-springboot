@@ -1,5 +1,7 @@
 package com.usuario.todolist.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,8 +14,12 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(TaskNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleTaskNotFoundException(TaskNotFoundException ex, WebRequest request) {
+        log.warn("Recurso no encontrado: {} - Contexto: {}", ex.getMessage(), request.getDescription(false));
+
         ErrorResponse errorResponse = new ErrorResponse(
                 "about:blank",
                 ex.getStatus().getReasonPhrase(),
@@ -28,7 +34,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex, WebRequest request) {
         String detail = ex.getBindingResult().getFieldErrors().stream()
                 .map(err -> err.getField() + ": " + err.getDefaultMessage())
-                .collect(Collectors.joining());
+                .collect(Collectors.joining(", "));
+
+        log.warn("Validación incorrecta de cliente: {} - Contexto: {}", detail, request.getDescription(false));
 
         ErrorResponse errorResponse = new ErrorResponse(
                 "about:blank",
@@ -42,6 +50,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DomainException.class)
     public ResponseEntity<ErrorResponse> handleBusinessException(DomainException ex, WebRequest request) {
+        log.warn("Error de dominio/negocio: {} - Contexto: {}", ex.getMessage(), request.getDescription(false));
+
         ErrorResponse errorResponse = new ErrorResponse(
                 "about:blank",
                 "Error de negocio",
@@ -57,6 +67,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex, WebRequest request) {
+        log.error("Error interno inesperado en {}: {}", request.getDescription(false), ex.getMessage(), ex);
+
         ErrorResponse errorResponse = new ErrorResponse(
                 "about:blank",
                 "Error interno",
