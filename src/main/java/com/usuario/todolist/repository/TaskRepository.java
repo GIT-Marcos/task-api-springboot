@@ -10,8 +10,6 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task> {
 
-    List<Task> findByCompleted(Boolean isCompleted);
-
     Boolean existsByDescription(String description);
 
     Boolean existsByDescriptionAndIdNot(String description, Long id);
