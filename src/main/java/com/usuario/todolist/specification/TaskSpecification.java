@@ -1,6 +1,6 @@
 package com.usuario.todolist.specification;
 
-import com.usuario.todolist.dto.TaskFilterRequest;
+import com.usuario.todolist.dto.request.TaskFilterRequest;
 import com.usuario.todolist.entity.Task;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;

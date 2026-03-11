@@ -3,10 +3,10 @@ package com.usuario.todolist.service;
 import com.usuario.todolist.specification.TaskSpecification;
 import com.usuario.todolist.exception.DuplicatedTaskException;
 import com.usuario.todolist.util.TaskMapper;
-import com.usuario.todolist.dto.TaskCreateRequest;
-import com.usuario.todolist.dto.TaskFilterRequest;
-import com.usuario.todolist.dto.TaskResponse;
-import com.usuario.todolist.dto.TaskUpdateRequest;
+import com.usuario.todolist.dto.request.TaskCreateRequest;
+import com.usuario.todolist.dto.request.TaskFilterRequest;
+import com.usuario.todolist.dto.response.TaskResponse;
+import com.usuario.todolist.dto.request.TaskUpdateRequest;
 import com.usuario.todolist.entity.Task;
 import com.usuario.todolist.exception.TaskNotFoundException;
 import com.usuario.todolist.repository.TaskRepository;
@@ -30,7 +30,7 @@ public class TaskService {
     }
 
     public TaskResponse save(TaskCreateRequest dto) {
-        validateDescriptionUnicity(dto.description());
+        validateDescriptionUnicityForCreate(dto.description());
 
         try {
             Task task = mapper.toEntity(dto);
@@ -46,7 +46,7 @@ public class TaskService {
                 () -> new TaskNotFoundException(id)
         );
 
-        validateDescriptionUnicity(tDTO.description());
+        validateDescriptionUnicityForUpdate(tDTO.description(), id);
 
         try {
             managedTask = mapper.updateEntityFromDTO(tDTO, managedTask);
@@ -79,8 +79,14 @@ public class TaskService {
 
     // ========================= PRIVADOS ============================
 
-    private void validateDescriptionUnicity(String desc) {
+    private void validateDescriptionUnicityForCreate(String desc) {
         if (repo.existsByDescription(desc)) {
+            throw new DuplicatedTaskException(desc);
+        }
+    }
+
+    private void validateDescriptionUnicityForUpdate(String desc, Long id) {
+        if (repo.existsByDescriptionAndIdNot(desc, id)) {
             throw new DuplicatedTaskException(desc);
         }
     }

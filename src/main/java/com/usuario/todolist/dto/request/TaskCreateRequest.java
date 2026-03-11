@@ -1,4 +1,4 @@
-package com.usuario.todolist.dto;
+package com.usuario.todolist.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

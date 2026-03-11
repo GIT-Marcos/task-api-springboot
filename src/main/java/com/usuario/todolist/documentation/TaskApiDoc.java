@@ -1,8 +1,8 @@
 package com.usuario.todolist.documentation;
 
-import com.usuario.todolist.dto.TaskCreateRequest;
-import com.usuario.todolist.dto.TaskResponse;
-import com.usuario.todolist.dto.TaskUpdateRequest;
+import com.usuario.todolist.dto.request.TaskCreateRequest;
+import com.usuario.todolist.dto.response.TaskResponse;
+import com.usuario.todolist.dto.request.TaskUpdateRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -14,4 +14,5 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
 
     Boolean existsByDescription(String description);
 
+    Boolean existsByDescriptionAndIdNot(String description, Long id);
 }

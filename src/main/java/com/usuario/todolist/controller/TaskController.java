@@ -1,10 +1,10 @@
 package com.usuario.todolist.controller;
 
 import com.usuario.todolist.documentation.TaskApiDoc;
-import com.usuario.todolist.dto.TaskFilterRequest;
-import com.usuario.todolist.dto.TaskResponse;
-import com.usuario.todolist.dto.TaskCreateRequest;
-import com.usuario.todolist.dto.TaskUpdateRequest;
+import com.usuario.todolist.dto.request.TaskFilterRequest;
+import com.usuario.todolist.dto.response.TaskResponse;
+import com.usuario.todolist.dto.request.TaskCreateRequest;
+import com.usuario.todolist.dto.request.TaskUpdateRequest;
 import com.usuario.todolist.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
