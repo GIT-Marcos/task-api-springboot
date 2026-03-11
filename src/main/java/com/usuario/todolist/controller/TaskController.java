@@ -58,9 +58,6 @@ public class TaskController implements TaskApiDoc {
     @GetMapping
     public ResponseEntity<List<TaskResponse>> findAll() {
         List<TaskResponse> results = serv.findAll();
-        if (results.isEmpty())
-            return ResponseEntity.noContent().build();
-
         return ResponseEntity.ok(results);
     }
 }
