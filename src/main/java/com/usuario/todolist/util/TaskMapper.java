@@ -1,8 +1,8 @@
 package com.usuario.todolist.util;
 
-import com.usuario.todolist.dto.TaskCreateRequest;
-import com.usuario.todolist.dto.TaskResponse;
-import com.usuario.todolist.dto.TaskUpdateRequest;
+import com.usuario.todolist.dto.request.TaskCreateRequest;
+import com.usuario.todolist.dto.response.TaskResponse;
+import com.usuario.todolist.dto.request.TaskUpdateRequest;
 import com.usuario.todolist.entity.Task;
 import org.springframework.stereotype.Component;
 

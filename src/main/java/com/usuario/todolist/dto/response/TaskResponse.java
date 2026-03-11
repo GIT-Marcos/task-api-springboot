@@ -1,4 +1,4 @@
-package com.usuario.todolist.dto;
+package com.usuario.todolist.dto.response;
 
 import com.usuario.todolist.entity.Task;
 

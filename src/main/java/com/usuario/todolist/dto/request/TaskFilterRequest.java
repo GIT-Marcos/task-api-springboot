@@ -1,4 +1,4 @@
-package com.usuario.todolist.dto;
+package com.usuario.todolist.dto.request;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
