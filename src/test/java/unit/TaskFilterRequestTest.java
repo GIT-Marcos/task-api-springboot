@@ -1,6 +1,6 @@
 package unit;
 
-import com.usuario.todolist.dto.TaskFilterRequest;
+import com.usuario.todolist.dto.request.TaskFilterRequest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

@@ -1,9 +1,9 @@
 package unit;
 
-import com.usuario.todolist.dto.TaskCreateRequest;
-import com.usuario.todolist.dto.TaskFilterRequest;
-import com.usuario.todolist.dto.TaskResponse;
-import com.usuario.todolist.dto.TaskUpdateRequest;
+import com.usuario.todolist.dto.request.TaskCreateRequest;
+import com.usuario.todolist.dto.request.TaskFilterRequest;
+import com.usuario.todolist.dto.response.TaskResponse;
+import com.usuario.todolist.dto.request.TaskUpdateRequest;
 import com.usuario.todolist.entity.Task;
 import com.usuario.todolist.exception.DuplicatedTaskException;
 import com.usuario.todolist.exception.TaskNotFoundException;
@@ -127,7 +127,10 @@ class TaskServiceTest {
 
         // Comportar
         when(repo.findById(id)).thenReturn(Optional.of(managedTask));
-        when(repo.existsByDescription(newDescription)).thenReturn(false);
+
+        // CAMBIO AQUÍ: Ahora se usa existsByDescriptionAndIdNot
+        when(repo.existsByDescriptionAndIdNot(newDescription, id)).thenReturn(false);
+
         when(mapper.updateEntityFromDTO(updateDTO, managedTask)).thenReturn(updatedTask);
         when(repo.save(updatedTask)).thenReturn(updatedTask);
         when(mapper.toResponseDTO(updatedTask)).thenReturn(expectedResponse);
@@ -173,7 +176,8 @@ class TaskServiceTest {
 
         // Comportar
         when(repo.findById(id)).thenReturn(Optional.of(managedTask));
-        when(repo.existsByDescription(duplicatedDescription)).thenReturn(true);
+
+        when(repo.existsByDescriptionAndIdNot(duplicatedDescription, id)).thenReturn(true);
 
         // Ejecutar y asegurar
         assertThatThrownBy(() -> taskService.update(id, updateDTO))
@@ -197,7 +201,9 @@ class TaskServiceTest {
 
         // Comportar
         when(repo.findById(id)).thenReturn(Optional.of(managedTask));
-        when(repo.existsByDescription(description)).thenReturn(false);
+
+        when(repo.existsByDescriptionAndIdNot(description, id)).thenReturn(false);
+
         when(mapper.updateEntityFromDTO(updateDTO, managedTask)).thenReturn(managedTask);
         when(repo.save(managedTask)).thenThrow(new DataIntegrityViolationException("Duplicate"));
 
