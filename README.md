@@ -39,3 +39,15 @@ http://localhost:8080/docs
 
 📄 Especificación OpenAPI (JSON puro):
 http://localhost:8080/api-docs
+
+## 📡 Probar la API
+
+Para facilitar las pruebas, fueron subidas al repositorio las peticiones más comunes en formato .json listas para
+importar a herramientas como Hoppscotch o Postman.
+
+1. Ir a una herramienta de pruebas de API's (https://hoppscotch.io/ o https://www.postman.com/)
+2. Importar la colección desde la carpeta `/docs/hoppscotch_collection.json`.
+3. Importar el entorno desde `/docs/hoppscotch_environment.json` y seleccionarlo.
+
+La API es hosteada por Render, y cuando no se usa el servicio por 15 minutos Render lo "duerme" para optimizar
+recursos. Por esto es probable que la primera petición tarde varios segundos hasta que Render levante la API.

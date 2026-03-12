@@ -53,7 +53,7 @@ class TaskServiceTest {
         TaskResponse expectedResponse = new TaskResponse(1L, description, false, LocalDateTime.now());
 
         // Comportar
-        when(repo.existsByDescription(description)).thenReturn(false);
+        when(repo.existsByDescriptionIgnoreCase(description)).thenReturn(false);
         when(mapper.toEntity(createDTO)).thenReturn(entityToSave);
         when(repo.save(entityToSave)).thenReturn(savedEntity);
         when(mapper.toResponseDTO(savedEntity)).thenReturn(expectedResponse);
@@ -77,7 +77,7 @@ class TaskServiceTest {
         TaskCreateRequest createDTO = new TaskCreateRequest(duplicatedDescription);
 
         // Comportar
-        when(repo.existsByDescription(duplicatedDescription)).thenReturn(true);
+        when(repo.existsByDescriptionIgnoreCase(duplicatedDescription)).thenReturn(true);
 
         // Ejecutar y asegurar
         assertThatThrownBy(() -> taskService.save(createDTO))
@@ -98,7 +98,7 @@ class TaskServiceTest {
         Task entityToSave = new Task(description);
 
         // Comportar
-        when(repo.existsByDescription(description)).thenReturn(false);
+        when(repo.existsByDescriptionIgnoreCase(description)).thenReturn(false);
         when(mapper.toEntity(createDTO)).thenReturn(entityToSave);
         when(repo.save(entityToSave)).thenThrow(new DataIntegrityViolationException("Duplicate task"));
 
@@ -128,8 +128,7 @@ class TaskServiceTest {
         // Comportar
         when(repo.findById(id)).thenReturn(Optional.of(managedTask));
 
-        // CAMBIO AQUÍ: Ahora se usa existsByDescriptionAndIdNot
-        when(repo.existsByDescriptionAndIdNot(newDescription, id)).thenReturn(false);
+        when(repo.existsByDescriptionIgnoreCaseAndIdNot(newDescription, id)).thenReturn(false);
 
         when(mapper.updateEntityFromDTO(updateDTO, managedTask)).thenReturn(updatedTask);
         when(repo.save(updatedTask)).thenReturn(updatedTask);
@@ -177,7 +176,7 @@ class TaskServiceTest {
         // Comportar
         when(repo.findById(id)).thenReturn(Optional.of(managedTask));
 
-        when(repo.existsByDescriptionAndIdNot(duplicatedDescription, id)).thenReturn(true);
+        when(repo.existsByDescriptionIgnoreCaseAndIdNot(duplicatedDescription, id)).thenReturn(true);
 
         // Ejecutar y asegurar
         assertThatThrownBy(() -> taskService.update(id, updateDTO))
@@ -202,7 +201,7 @@ class TaskServiceTest {
         // Comportar
         when(repo.findById(id)).thenReturn(Optional.of(managedTask));
 
-        when(repo.existsByDescriptionAndIdNot(description, id)).thenReturn(false);
+        when(repo.existsByDescriptionIgnoreCaseAndIdNot(description, id)).thenReturn(false);
 
         when(mapper.updateEntityFromDTO(updateDTO, managedTask)).thenReturn(managedTask);
         when(repo.save(managedTask)).thenThrow(new DataIntegrityViolationException("Duplicate"));
