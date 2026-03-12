@@ -1,0 +1,19 @@
+{
+  "id": "0o20w6a12cj",
+  "v": 2,
+  "name": "TASK-API",
+  "variables": [
+    {
+      "key": "base_url",
+      "secret": false,
+      "initialValue": "https://task-api-springboot.onrender.com/api/tasks",
+      "currentValue": ""
+    },
+    {
+      "key": "filters",
+      "secret": false,
+      "initialValue": "/filters?",
+      "currentValue": ""
+    }
+  ]
+}
