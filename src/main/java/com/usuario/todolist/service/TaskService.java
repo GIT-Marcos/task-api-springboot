@@ -12,6 +12,7 @@ import com.usuario.todolist.exception.TaskNotFoundException;
 import com.usuario.todolist.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +70,7 @@ public class TaskService {
     // ========================= LECTURA ============================
 
     public List<TaskResponse> findAll() {
-        return mapper.toResponseDTO(repo.findAll());
+        return mapper.toResponseDTO(repo.findAll(Sort.by("date").descending()));
     }
 
     public List<TaskResponse> findByFilters(TaskFilterRequest filter) {
