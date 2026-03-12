@@ -80,13 +80,13 @@ public class TaskService {
     // ========================= PRIVADOS ============================
 
     private void validateDescriptionUnicityForCreate(String desc) {
-        if (repo.existsByDescription(desc)) {
+        if (repo.existsByDescriptionIgnoreCase(desc)) {
             throw new DuplicatedTaskException(desc);
         }
     }
 
     private void validateDescriptionUnicityForUpdate(String desc, Long id) {
-        if (repo.existsByDescriptionAndIdNot(desc, id)) {
+        if (repo.existsByDescriptionIgnoreCaseAndIdNot(desc, id)) {
             throw new DuplicatedTaskException(desc);
         }
     }

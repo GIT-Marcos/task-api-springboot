@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task> {
 
-    Boolean existsByDescription(String description);
+    Boolean existsByDescriptionIgnoreCase(String description);
 
-    Boolean existsByDescriptionAndIdNot(String description, Long id);
+    Boolean existsByDescriptionIgnoreCaseAndIdNot(String description, Long id);
 }
