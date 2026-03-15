@@ -2,6 +2,7 @@ package com.usuario.todolist.controller;
 
 import com.usuario.todolist.documentation.TaskApiDoc;
 import com.usuario.todolist.dto.request.TaskFilterRequest;
+import com.usuario.todolist.dto.request.TaskPatchRequest;
 import com.usuario.todolist.dto.response.TaskResponse;
 import com.usuario.todolist.dto.request.TaskCreateRequest;
 import com.usuario.todolist.dto.request.TaskUpdateRequest;
@@ -36,6 +37,12 @@ public class TaskController implements TaskApiDoc {
     public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @RequestBody @Valid TaskUpdateRequest tDTO) {
         TaskResponse updatedTask = serv.update(id, tDTO);
         return ResponseEntity.ok(updatedTask);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<TaskResponse> patchTask(@PathVariable Long id, @RequestBody @Valid TaskPatchRequest tDTO) {
+        TaskResponse patchedTask = serv.patch(id, tDTO);
+        return ResponseEntity.ok(patchedTask);
     }
 
     @DeleteMapping("/{id}")
