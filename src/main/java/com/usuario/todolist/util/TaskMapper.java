@@ -1,6 +1,7 @@
 package com.usuario.todolist.util;
 
 import com.usuario.todolist.dto.request.TaskCreateRequest;
+import com.usuario.todolist.dto.request.TaskPatchRequest;
 import com.usuario.todolist.dto.response.TaskResponse;
 import com.usuario.todolist.dto.request.TaskUpdateRequest;
 import com.usuario.todolist.entity.Task;
@@ -23,6 +24,19 @@ public class TaskMapper {
 
         managedTask.setCompleted(dto.completed());
         managedTask.setDescription(dto.description());
+
+        return managedTask;
+    }
+
+    public Task patchEntityFromDTO(TaskPatchRequest dto, Task managedTask) {
+        if (dto == null || managedTask == null) return null;
+
+        if (dto.description() != null) {
+            managedTask.setDescription(dto.description());
+        }
+        if (dto.completed() != null) {
+            managedTask.setCompleted(dto.completed());
+        }
 
         return managedTask;
     }

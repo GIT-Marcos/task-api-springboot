@@ -1,6 +1,7 @@
 package com.usuario.todolist.documentation;
 
 import com.usuario.todolist.dto.request.TaskCreateRequest;
+import com.usuario.todolist.dto.request.TaskPatchRequest;
 import com.usuario.todolist.dto.response.TaskResponse;
 import com.usuario.todolist.dto.request.TaskUpdateRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,10 +27,9 @@ public interface TaskApiDoc {
             TaskCreateRequest tDTO
     );
 
-
     @Operation(
             summary = "Actualizar una tarea existente",
-            description = "Actualiza parcial o totalmente los datos de una tarea existente por su identificador único."
+            description = "Actualiza TOTALMENTE los datos de una tarea existente por su identificador único."
     )
     @ApiResponse(responseCode = "200", description = "Tarea actualizada correctamente")
     ResponseEntity<TaskResponse> updateTask(
@@ -40,6 +40,18 @@ public interface TaskApiDoc {
             TaskUpdateRequest tDTO
     );
 
+    @Operation(
+            summary = "Actualizar una tarea existente",
+            description = "Actualiza PARCIAL o totalmente los datos de una tarea existente por su identificador único."
+    )
+    @ApiResponse(responseCode = "200", description = "Tarea actualizada correctamente")
+    ResponseEntity<TaskResponse> patchTask(
+            @Parameter(description = "ID numérico único de la tarea", example = "42")
+            Long id,
+
+            @Parameter(description = "Datos a actualizar de la tarea")
+            TaskPatchRequest tDTO
+    );
 
     @Operation(
             summary = "Eliminar una tarea",
@@ -51,23 +63,12 @@ public interface TaskApiDoc {
             Long id
     );
 
-
     @Operation(
-            summary = "Listar todas las tareas",
-            description = "Retorna el listado completo de todas las tareas almacenadas en el sistema."
-    )
-    @ApiResponse(responseCode = "200", description = "Listado de tareas retornado correctamente")
-    @ApiResponse(responseCode = "204", description = "No existen tareas registradas en el sistema")
-    ResponseEntity<List<TaskResponse>> findAll();
-
-
-    @Operation(
-            summary = "Buscar tareas con filtros",
-            description = "Permite buscar y filtrar tareas por diferentes criterios. Todos los filtros son opcionales y se combinan entre si."
+            summary = "Ver todas o buscar tareas con filtros",
+            description = "Permite ver todas o buscar y filtrar tareas por diferentes criterios. Todos los filtros son opcionales y se combinan entre si."
     )
     @ApiResponse(responseCode = "200", description = "Listado de tareas que coinciden con los filtros")
-    @ApiResponse(responseCode = "204", description = "Ninguna tarea coincide con los filtros indicados")
-    ResponseEntity<List<TaskResponse>> findByFilters(
+    ResponseEntity<List<TaskResponse>> find(
 
             @Parameter(description = "Filtrar por descripción que contenga el texto", example = "comprar pan")
             String description,
@@ -81,5 +82,4 @@ public interface TaskApiDoc {
             @Parameter(description = "Filtrar solo tareas completadas o pendientes", example = "false")
             Boolean completed
     );
-
 }

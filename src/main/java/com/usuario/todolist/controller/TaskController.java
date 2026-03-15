@@ -2,6 +2,7 @@ package com.usuario.todolist.controller;
 
 import com.usuario.todolist.documentation.TaskApiDoc;
 import com.usuario.todolist.dto.request.TaskFilterRequest;
+import com.usuario.todolist.dto.request.TaskPatchRequest;
 import com.usuario.todolist.dto.response.TaskResponse;
 import com.usuario.todolist.dto.request.TaskCreateRequest;
 import com.usuario.todolist.dto.request.TaskUpdateRequest;
@@ -38,6 +39,12 @@ public class TaskController implements TaskApiDoc {
         return ResponseEntity.ok(updatedTask);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<TaskResponse> patchTask(@PathVariable Long id, @RequestBody @Valid TaskPatchRequest tDTO) {
+        TaskResponse patchedTask = serv.patch(id, tDTO);
+        return ResponseEntity.ok(patchedTask);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         serv.delete(id);
@@ -46,18 +53,12 @@ public class TaskController implements TaskApiDoc {
 
     // ========================= LECTURA ============================
 
-    @GetMapping("/filters")
-    public ResponseEntity<List<TaskResponse>> findByFilters(@RequestParam(required = false) String description,
+    @GetMapping
+    public ResponseEntity<List<TaskResponse>> find(@RequestParam(required = false) String description,
                                                             @RequestParam(required = false) LocalDate minDate,
                                                             @RequestParam(required = false) LocalDate maxDate,
                                                             @RequestParam(required = false) Boolean completed) {
         TaskFilterRequest filter = new TaskFilterRequest(description, minDate, maxDate, completed);
         return ResponseEntity.ok(serv.findByFilters(filter));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<TaskResponse>> findAll() {
-        List<TaskResponse> results = serv.findAll();
-        return ResponseEntity.ok(results);
     }
 }

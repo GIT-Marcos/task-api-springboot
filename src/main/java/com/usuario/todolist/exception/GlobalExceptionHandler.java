@@ -1,5 +1,6 @@
 package com.usuario.todolist.exception;
 
+import com.usuario.todolist.dto.response.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
