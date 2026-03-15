@@ -1,40 +1,40 @@
 # =========== FILTROS ===========
 
 ### Sin filtros → devuelve TODAS las tareas
-GET http://localhost:8080/api/tasks/filters
+GET http://localhost:8080/api/tasks
 
 ### Solo por descripción
-GET http://localhost:8080/api/tasks/filters?description=compras
+GET http://localhost:8080/api/tasks?description=compras
 
 ### Descripción parcial
-GET http://localhost:8080/api/tasks/filters?description=com
+GET http://localhost:8080/api/tasks?description=com
 
 ### Solo tareas completadas
-GET http://localhost:8080/api/tasks/filters?completed=true
+GET http://localhost:8080/api/tasks?completed=true
 
 ### Solo tareas pendientes
-GET http://localhost:8080/api/tasks/filters?completed=false
+GET http://localhost:8080/api/tasks?completed=false
 
 ### Solo por fecha mínima
-GET http://localhost:8080/api/tasks/filters?minDate=2024-01-01
+GET http://localhost:8080/api/tasks?minDate=2024-01-01
 
 ### Solo por fecha máxima
-GET http://localhost:8080/api/tasks/filters?maxDate=2024-12-31
+GET http://localhost:8080/api/tasks?maxDate=2024-12-31
 
 ### Por rango de fechas
-GET http://localhost:8080/api/tasks/filters?minDate=2024-06-01&maxDate=2024-06-30
+GET http://localhost:8080/api/tasks?minDate=2024-06-01&maxDate=2024-06-30
 
 ### Descripción + completadas
-GET http://localhost:8080/api/tasks/filters?description=comp&completed=true
+GET http://localhost:8080/api/tasks?description=comp&completed=true
 
 ### Descripción + rango de fechas
-GET http://localhost:8080/api/tasks/filters?description=compras&minDate=2026-01-01&maxDate=2026-12-31
+GET http://localhost:8080/api/tasks?description=compras&minDate=2026-01-01&maxDate=2026-12-31
 
 ### TODOS los filtros combinados
-GET http://localhost:8080/api/tasks/filters?description=compr&minDate=2026-01-01&maxDate=2026-06-30&completed=false
+GET http://localhost:8080/api/tasks?description=compr&minDate=2026-01-01&maxDate=2026-06-30&completed=false
 
 ### Rango de fechas + completadas
-GET http://localhost:8080/api/tasks/filters?minDate=2026-01-01&maxDate=2026-12-31&completed=true
+GET http://localhost:8080/api/tasks?minDate=2026-01-01&maxDate=2026-12-31&completed=true
 
 
 

@@ -1,6 +1,6 @@
 package com.usuario.todolist.config;
 
-import com.usuario.todolist.exception.ErrorResponse;
+import com.usuario.todolist.dto.response.ErrorResponse;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

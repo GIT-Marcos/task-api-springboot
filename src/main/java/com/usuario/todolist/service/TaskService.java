@@ -1,5 +1,6 @@
 package com.usuario.todolist.service;
 
+import com.usuario.todolist.dto.request.TaskPatchRequest;
 import com.usuario.todolist.specification.TaskSpecification;
 import com.usuario.todolist.exception.DuplicatedTaskException;
 import com.usuario.todolist.util.TaskMapper;
@@ -43,14 +44,25 @@ public class TaskService {
     }
 
     public TaskResponse update(Long id, TaskUpdateRequest tDTO) {
-        Task managedTask = repo.findById(id).orElseThrow(
-                () -> new TaskNotFoundException(id)
-        );
+        Task managedTask = findById(id);
 
         validateDescriptionUnicityForUpdate(tDTO.description(), id);
 
         try {
             managedTask = mapper.updateEntityFromDTO(tDTO, managedTask);
+            managedTask = repo.save(managedTask);
+
+            return mapper.toResponseDTO(managedTask);
+        } catch (DataIntegrityViolationException ex) {
+            throw new DuplicatedTaskException(tDTO.description());
+        }
+    }
+
+    public TaskResponse patch(Long id, TaskPatchRequest tDTO) {
+        Task managedTask = findById(id);
+
+        try {
+            managedTask = mapper.patchEntityFromDTO(tDTO, managedTask);
             managedTask = repo.save(managedTask);
 
             return mapper.toResponseDTO(managedTask);
@@ -69,6 +81,7 @@ public class TaskService {
 
     // ========================= LECTURA ============================
 
+    @Deprecated
     public List<TaskResponse> findAll() {
         return mapper.toResponseDTO(repo.findAll(Sort.by("date").descending()));
     }
@@ -79,6 +92,12 @@ public class TaskService {
     }
 
     // ========================= PRIVADOS ============================
+
+    private Task findById(Long id) {
+        return repo.findById(id).orElseThrow(
+                () -> new TaskNotFoundException(id)
+        );
+    }
 
     private void validateDescriptionUnicityForCreate(String desc) {
         if (repo.existsByDescriptionIgnoreCase(desc)) {
