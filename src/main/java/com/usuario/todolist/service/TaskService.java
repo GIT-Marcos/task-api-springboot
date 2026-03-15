@@ -81,6 +81,7 @@ public class TaskService {
 
     // ========================= LECTURA ============================
 
+    @Deprecated
     public List<TaskResponse> findAll() {
         return mapper.toResponseDTO(repo.findAll(Sort.by("date").descending()));
     }

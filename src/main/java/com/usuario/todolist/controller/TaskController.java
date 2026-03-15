@@ -53,18 +53,12 @@ public class TaskController implements TaskApiDoc {
 
     // ========================= LECTURA ============================
 
-    @GetMapping("/filters")
-    public ResponseEntity<List<TaskResponse>> findByFilters(@RequestParam(required = false) String description,
+    @GetMapping
+    public ResponseEntity<List<TaskResponse>> find(@RequestParam(required = false) String description,
                                                             @RequestParam(required = false) LocalDate minDate,
                                                             @RequestParam(required = false) LocalDate maxDate,
                                                             @RequestParam(required = false) Boolean completed) {
         TaskFilterRequest filter = new TaskFilterRequest(description, minDate, maxDate, completed);
         return ResponseEntity.ok(serv.findByFilters(filter));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<TaskResponse>> findAll() {
-        List<TaskResponse> results = serv.findAll();
-        return ResponseEntity.ok(results);
     }
 }

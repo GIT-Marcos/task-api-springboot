@@ -8,13 +8,22 @@ Content-Type: application/json
   "description": "Test de tarea compras 4"
 }
 
-### Edición de tarea
-@idForUpdate = 4
+### Edición de tarea completa
+@idForUpdate = 1
 PUT http://localhost:8080/api/tasks/{{idForUpdate}}
 Content-Type: application/json
 
 {
-  "description": "Test de tarea compras 1",
+  "description": "Test de tarea modificada",
+  "completed": true
+}
+
+### Patch de tarea
+@idForPatch = 1
+PATCH http://localhost:8080/api/tasks/{{idForPatch}}
+Content-Type: application/json
+
+{
   "completed": true
 }
 
