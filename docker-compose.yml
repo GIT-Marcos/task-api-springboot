@@ -1,0 +1,38 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus-local
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      # Permite recargar la config sin reiniciar el contenedor
+      - '--web.enable-lifecycle'
+    networks:
+      - dev-network
+      # Para Linux
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana-local
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - dev-network
+
+# Red privada para que los contenedores hablen entre sí de forma segura
+networks:
+  dev-network:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+  grafana_data:
