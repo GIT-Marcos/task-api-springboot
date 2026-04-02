@@ -1,0 +1,32 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: "0.0.0.0:4318"
+
+processors:
+  batch:
+    send_batch_size: 500
+    timeout: 10s
+  resourcedetection:
+    detectors: [ env, system ]
+    timeout: 2s
+    override: false
+
+exporters:
+  prometheusremotewrite:
+    endpoint: "${GRAFANA_REMOTE_WRITE_URL}"
+    auth:
+      basicauth:
+        username: "${GRAFANA_USER_ID}"
+        password: "${GRAFANA_API_KEY}"
+
+service:
+  telemetry:
+    logs:
+      level: "warn"
+  pipelines:
+    metrics:
+      receivers: [ otlp ]
+      processors: [ resourcedetection, batch ]
+      exporters: [ prometheusremotewrite ]

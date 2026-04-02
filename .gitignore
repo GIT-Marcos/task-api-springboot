@@ -46,3 +46,4 @@ build/
 
 ### Datos sensibles locales ###
 src/main/resources/application-dev.properties
+otel-config.yml
