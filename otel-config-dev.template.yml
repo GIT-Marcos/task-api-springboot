@@ -1,0 +1,40 @@
+# Template para entorno Local (Docker Desktop / Prometheus local)
+# Renombrar a otel.config.yml para que lo lea docker-compose.yml
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: "0.0.0.0:4318"
+
+processors:
+  batch:
+    send_batch_size: 10
+    timeout: 1s
+  resourcedetection:
+    detectors: [ env, system ]
+    timeout: 2s
+    override: false
+
+exporters:
+  # Endpoint para que Prometheus local haga Scraping
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    resource_to_telemetry_conversion:
+      enabled: true
+
+service:
+  telemetry:
+    logs:
+      level: "info"
+    metrics:
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: '0.0.0.0'
+                port: 8888
+  pipelines:
+    metrics:
+      receivers: [ otlp ]
+      processors: [ resourcedetection, batch ]
+      exporters: [ prometheus ]
