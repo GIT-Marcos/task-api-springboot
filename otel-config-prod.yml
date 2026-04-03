@@ -13,15 +13,20 @@ processors:
     timeout: 2s
     override: false
 
+extensions:
+  basicauth/grafana:
+    client_auth:
+      username: "${GRAFANA_USER_ID}"
+      password: "${GRAFANA_API_KEY}"
+
 exporters:
   prometheusremotewrite:
     endpoint: "${GRAFANA_REMOTE_WRITE_URL}"
     auth:
-      basicauth:
-        username: "${GRAFANA_USER_ID}"
-        password: "${GRAFANA_API_KEY}"
+      authenticator: basicauth/grafana
 
 service:
+  extensions: [ basicauth/grafana ]
   telemetry:
     logs:
       level: "warn"
