@@ -10,6 +10,17 @@ else
     fi
 fi
 
+echo ">>> Verificando binario del Collector..."
+ls -l /app/otelcol
+
+echo ">>> Iniciando OTEL Collector..."
+/app/otelcol --config=$CONFIG_FILE &
+
+sleep 3
+
+echo ">>> Iniciando Java..."
+java -jar app.jar
+
 echo "Uso de configuración: $CONFIG_FILE"
 /app/otelcol --config=$CONFIG_FILE &
 java -jar app.jar
