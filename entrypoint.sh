@@ -2,11 +2,14 @@
 if [ "$APP_PROFILE" = "prod" ]; then
     CONFIG_FILE="/app/otel-config-prod.yml"
 else
-    CONFIG_FILE="/app/otel-config-dev.yml"
+    # En DEV, si no renombraste el template, intentamos usar el template
+    if [ -f "/app/otel-config.yml" ]; then
+        CONFIG_FILE="/app/otel-config.yml"
+    else
+        CONFIG_FILE="/app/otel-config-dev.template.yml"
+    fi
 fi
 
-echo "Iniciando OTEL Collector con: $CONFIG_FILE"
+echo "Uso de configuración: $CONFIG_FILE"
 /app/otelcol --config=$CONFIG_FILE &
-
-echo "Iniciando Aplicación Java..."
 java -jar app.jar
