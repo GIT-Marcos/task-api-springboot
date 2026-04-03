@@ -6,14 +6,13 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # --- Fase 2: Preparación del Collector ---
-FROM alpine:latest AS otel-fetcher
-RUN apk add --no-cache curl
-
+FROM debian:bookworm-slim AS otel-fetcher
+RUN apt-get update && apt-get install -y curl
 RUN curl -L -o /otelcol https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.90.0/otelcol-contrib_0.90.0_linux_amd64 && \
     chmod +x /otelcol
 
 # --- Fase 3: Ejecución (Run) ---
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
 COPY --from=otel-fetcher /otelcol /app/otelcol
