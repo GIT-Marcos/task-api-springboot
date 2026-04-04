@@ -72,6 +72,10 @@ public class MicrometerConfig {
                     return id.withTag(Tag.of("uri", "NOT_FOUND"));
                 }
 
+                if (uri != null && uri.matches("/api/tasks/\\d+")) {
+                    return id.withTag(Tag.of("uri", "/api/tasks/{id}"));
+                }
+
                 return id;
             }
         };
