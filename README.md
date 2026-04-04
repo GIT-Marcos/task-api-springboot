@@ -8,7 +8,11 @@ Una API RESTful simple construida con Spring Boot para la gestión de tareas.
 * Spring Boot
 * Spring Data JPA
 * Base de datos PostgreSQL
+* Render
 * Maven
+* Docker
+* OpenAPI (antigüo Swagger UI)
+* Prometheus - Grafana
 
 ## ⚙️ Funcionalidades
 
@@ -21,13 +25,12 @@ Una API RESTful simple construida con Spring Boot para la gestión de tareas.
 ## 🛠️ Instalación y Uso Local
 
 1. Clonar el repositorio: https://github.com/GIT-Marcos/task-api-springboot.git
-2. Tener PostgreSQL instalado y corriendo en el puerto 5432.
-3. Crear una base de datos vacía en Postgres llamada tasks_db.
-4. Ir a la carpeta src/main/resources/.
-5. Tomar el archivo application-dev.template.properties, renombrarlo a application-dev.properties (este archivo está
+2. Instalar y abrir Docker Desktop.
+3. Ir a la carpeta src/main/resources/.
+4. Tomar el archivo application-dev.template.properties, renombrarlo a _application-dev.properties_ (este archivo está
    ignorado por git por seguridad).
-6. Reemplazar `NOMBRE_USUARIO` y `CONTRASEÑA` con tus credenciales de Postgres locales.
-7. Ejecutar el proyecto.
+5. Ejecutar `docker compose up -d` en la consola del IDE.
+6. Ejecutar el proyecto.
 
 ## 📚 Documentación de la API (Swagger UI)
 
@@ -39,6 +42,9 @@ http://localhost:8080/docs
 
 📄 Especificación OpenAPI (JSON puro):
 http://localhost:8080/api-docs
+
+Tener en cuenta que por seguridad el acceso a esta documentación está bloqueado en producción, por lo tanto, solo puede
+ser consultada desde el entorno de desarrollo local.
 
 ## 📡 Probar la API
 
