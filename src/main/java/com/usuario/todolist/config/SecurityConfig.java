@@ -34,10 +34,16 @@ public class SecurityConfig {
                 .headers(headers -> headers
                         // Evita Clickjacking
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::deny)
-                        .contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'none'; frame-ancestors 'none';"))
+                        .contentSecurityPolicy(csp -> csp.policyDirectives(
+                                "default-src 'self'; " +
+                                        "script-src 'self' 'unsafe-inline'; " +
+                                        "style-src 'self' 'unsafe-inline'; " +
+                                        "img-src 'self' data:; " +
+                                        "connect-src 'self'"))
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/swagger-ui/index.html", "/api-docs/**", "/docs/**").permitAll()
                         .requestMatchers("/actuator/**").hasRole("ACTUATOR")
                         .requestMatchers("/api/tasks/**").permitAll()
                         .anyRequest().denyAll()
