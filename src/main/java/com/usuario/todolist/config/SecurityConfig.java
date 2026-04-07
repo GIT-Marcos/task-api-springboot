@@ -43,7 +43,13 @@ public class SecurityConfig {
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/swagger-ui/index.html", "/api-docs/**", "/docs/**").permitAll()
+                        .requestMatchers(
+                                "/docs/**",
+                                "/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll()
                         .requestMatchers("/actuator/**").hasRole("ACTUATOR")
                         .requestMatchers("/api/tasks/**").permitAll()
                         .anyRequest().denyAll()
