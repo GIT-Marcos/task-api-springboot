@@ -3,8 +3,11 @@
 ### Sin filtros → devuelve TODAS las tareas
 GET http://localhost:8080/api/tasks
 
-### Paginación
-GET http://localhost:8080/api/tasks?lastId=4&lastDate=2026-04-06T18:44:33
+### Paginación con datos parciales
+GET http://localhost:8080/api/tasks?lastId=4&lastDate=2026-04-06T18:44:33&size=1&direction=ASC
+
+### Paginación con datos completos
+GET http://localhost:8080/api/tasks?lastId=4&lastDate=2026-04-06T18:44:33&size=1&direction=ASC
 
 ### Solo por descripción
 GET http://localhost:8080/api/tasks?description=compras
