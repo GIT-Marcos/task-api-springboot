@@ -1,23 +1,24 @@
 package com.usuario.todolist.service;
 
-import com.usuario.todolist.dto.request.TaskPatchRequest;
+import com.usuario.todolist.dto.request.*;
 import com.usuario.todolist.specification.TaskSpecification;
 import com.usuario.todolist.exception.DuplicatedTaskException;
 import com.usuario.todolist.util.TaskMapper;
-import com.usuario.todolist.dto.request.TaskCreateRequest;
-import com.usuario.todolist.dto.request.TaskFilterRequest;
 import com.usuario.todolist.dto.response.TaskResponse;
-import com.usuario.todolist.dto.request.TaskUpdateRequest;
 import com.usuario.todolist.entity.Task;
 import com.usuario.todolist.exception.TaskNotFoundException;
 import com.usuario.todolist.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.ScrollPosition;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Window;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TaskService {
@@ -91,7 +92,36 @@ public class TaskService {
         return mapper.toResponseDTO(repo.findAll(spec));
     }
 
+    public Window<TaskResponse> findByFilters(TaskFilterRequest filter, CursorPageRequest cpr) {
+        Sort sort = buildSort(cpr.direction());
+        final ScrollPosition finalPos = buildScrollPosition(cpr);
+
+        return repo.findBy(
+                TaskSpecification.buildFilter(filter),
+                query -> query
+                        .limit(cpr.size())
+                        .sortBy(sort)
+                        .scroll(finalPos)
+        ).map(TaskResponse::new);
+    }
+
     // ========================= PRIVADOS ============================
+
+    private Sort buildSort(Sort.Direction direction) {
+        return Sort.by(direction, "date").and(Sort.by(direction, "id"));
+    }
+
+    private ScrollPosition buildScrollPosition(CursorPageRequest cpr) {
+        if (cpr.lastId() == null || cpr.lastDate() == null) {
+            return ScrollPosition.keyset();
+        }
+
+        Map<String, Object> keys = new LinkedHashMap<>();
+        keys.put("date", cpr.lastDate());
+        keys.put("id", cpr.lastId());
+
+        return ScrollPosition.of(keys, ScrollPosition.Direction.FORWARD);
+    }
 
     private Task findById(Long id) {
         return repo.findById(id).orElseThrow(

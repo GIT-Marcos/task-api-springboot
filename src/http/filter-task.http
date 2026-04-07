@@ -3,6 +3,9 @@
 ### Sin filtros → devuelve TODAS las tareas
 GET http://localhost:8080/api/tasks
 
+### Paginación
+GET http://localhost:8080/api/tasks?lastId=4&lastDate=2026-04-06T18:44:33
+
 ### Solo por descripción
 GET http://localhost:8080/api/tasks?description=compras
 
@@ -16,25 +19,25 @@ GET http://localhost:8080/api/tasks?completed=true
 GET http://localhost:8080/api/tasks?completed=false
 
 ### Solo por fecha mínima
-GET http://localhost:8080/api/tasks?minDate=2024-01-01
+GET http://localhost:8080/api/tasks?minDate=2026-01-01T12:00
 
 ### Solo por fecha máxima
-GET http://localhost:8080/api/tasks?maxDate=2024-12-31
+GET http://localhost:8080/api/tasks?maxDate=2026-12-31T12:00
 
 ### Por rango de fechas
-GET http://localhost:8080/api/tasks?minDate=2024-06-01&maxDate=2024-06-30
+GET http://localhost:8080/api/tasks?minDate=2026-01-01T12:00&maxDate=2026-12-31T12:00
 
 ### Descripción + completadas
 GET http://localhost:8080/api/tasks?description=comp&completed=true
 
 ### Descripción + rango de fechas
-GET http://localhost:8080/api/tasks?description=compras&minDate=2026-01-01&maxDate=2026-12-31
+GET http://localhost:8080/api/tasks?description=compras&minDate=2026-01-01T12:00&maxDate=2026-12-31T12:00
 
 ### TODOS los filtros combinados
-GET http://localhost:8080/api/tasks?description=compr&minDate=2026-01-01&maxDate=2026-06-30&completed=false
+GET http://localhost:8080/api/tasks?description=compr&minDate=2026-01-01T12:00&maxDate=2026-12-31T12:00&completed=false
 
 ### Rango de fechas + completadas
-GET http://localhost:8080/api/tasks?minDate=2026-01-01&maxDate=2026-12-31&completed=true
+GET http://localhost:8080/api/tasks?minDate=2026-01-01T12:00&maxDate=2026-12-31T12:00&completed=true
 
 
 

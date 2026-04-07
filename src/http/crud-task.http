@@ -5,7 +5,7 @@ POST http://localhost:8080/api/tasks
 Content-Type: application/json
 
 {
-  "description": "Test de tarea compras 4"
+  "description": "Test de tarea compras 1"
 }
 
 ### Edición de tarea completa
@@ -15,7 +15,15 @@ Content-Type: application/json
 
 {
   "description": "Test de tarea modificada",
-  "completed": true
+  "completed": false
+}
+
+### Tarea con nombre repetido
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "description": "Test de tarea modificada"
 }
 
 ### Patch de tarea
@@ -30,6 +38,10 @@ Content-Type: application/json
 ### Eliminación de tarea
 @idForDelete = 1
 DELETE http://localhost:8080/api/tasks/{{idForDelete}}
+
+### Tarea no encontrada
+@idForNotFound = 999
+DELETE http://localhost:8080/api/tasks/{{idForNotFound}}
 
 ### Ver todas
 GET http://localhost:8080/api/tasks

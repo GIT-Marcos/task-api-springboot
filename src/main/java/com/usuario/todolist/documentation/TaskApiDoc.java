@@ -8,10 +8,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Window;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Tag(name = "Tasks", description = "API para gestión y administración de tareas del Todo List")
 @ApiStandardResponse
@@ -65,21 +66,43 @@ public interface TaskApiDoc {
 
     @Operation(
             summary = "Ver todas o buscar tareas con filtros",
-            description = "Permite ver todas o buscar y filtrar tareas por diferentes criterios. Todos los filtros son opcionales y se combinan entre si."
+            description = """
+                    Permite ver todas o buscar y filtrar tareas por diferentes criterios. Todos los filtros son
+                     opcionales y se combinan entre si. Admite paginación de 15 elementos. Formatos de fecha
+                     aceptados:
+                     - uuuu-MM-dd'T'HH:mm (USAR SOLO EN FILTROS, NO ADMITIDO SOBRE EL CAMPO 'lastDate')
+                     - uuuu-MM-dd'T'HH:mm:ss
+                     - uuuu-MM-dd'T'HH:mm:ss.SSS
+                     - uuuu-MM-dd'T'HH:mm:ss.SSSSSS
+                     - uuuu-MM-dd'T'HH:mm:ss.SSSSSSSSS
+                    """
     )
     @ApiResponse(responseCode = "200", description = "Listado de tareas que coinciden con los filtros")
-    ResponseEntity<List<TaskResponse>> find(
+    ResponseEntity<Window<TaskResponse>> find(
 
             @Parameter(description = "Filtrar por descripción que contenga el texto", example = "comprar pan")
             String description,
 
-            @Parameter(description = "Filtrar tareas con fecha mayor o igual a la indicada", example = "2026-01-01")
-            LocalDate minDate,
+            @Parameter(description = "Filtrar tareas con fecha mayor o igual a la indicada", example = "2026-04-06T18:44:33")
+            LocalDateTime minDate,
 
-            @Parameter(description = "Filtrar tareas con fecha menor o igual a la indicada", example = "2026-12-31")
-            LocalDate maxDate,
+            @Parameter(description = "Filtrar tareas con fecha menor o igual a la indicada", example = "2026-04-06T18:44:33")
+            LocalDateTime maxDate,
 
             @Parameter(description = "Filtrar solo tareas completadas o pendientes", example = "false")
-            Boolean completed
+            Boolean completed,
+
+            @Parameter(description = "Se combina con 'lastDate' y forman el índice para paginación", example = "34")
+            Long lastId,
+
+            @Parameter(description = "Se combina con 'lastId' y forman el índice para paginación." +
+                    "Necesita, al menos, segundos.", example = "2026-04-06T18:44:33.531869")
+            LocalDateTime lastDate,
+
+            @Parameter(description = "Cantidad de tareas por página. Max: 100 - min: 1", example = "15")
+            Integer size,
+
+            @Parameter(description = "Tipo de orden de las tareas", example = "DESC")
+            Sort.Direction direction
     );
 }
