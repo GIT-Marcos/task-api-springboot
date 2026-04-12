@@ -11,7 +11,7 @@ Una API RESTful simple construida con Spring Boot para la gestión de tareas.
 * Render
 * Maven
 * Docker
-* OpenAPI (antigüo Swagger UI)
+* OpenAPI (antiguo Swagger UI)
 * Prometheus - Grafana
 
 ## ⚙️ Funcionalidades
