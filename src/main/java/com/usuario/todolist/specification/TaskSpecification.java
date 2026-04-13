@@ -11,55 +11,31 @@ import java.util.List;
 public class TaskSpecification {
 
     public static Specification<Task> buildFilter(TaskFilterRequest filter) {
-        return (root, query, criteriaBuilder) -> {
+        return (root, query, cb) -> {
 
             List<Predicate> predicates = new ArrayList<>();
-            // todo: ver si usar Metamodel de JPA para evitar String directos
-            if (filter.description() != null && !filter.description().isEmpty()) {
-                predicates.add(
-                        criteriaBuilder.like(
-                                criteriaBuilder.lower(root.get("description")),
-                                "%" + filter.description().toLowerCase() + "%"
-                        )
-                );
+
+            if (filter.description() != null && !filter.description().isBlank()) {
+                String pattern = "%" + filter.description().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(root.get("description")), pattern));
             }
 
             if (filter.minDate() != null) {
-                predicates.add(
-                        criteriaBuilder.greaterThanOrEqualTo(
-                                root.get("date"),
-                                filter.minDate()
-                        )
-                );
+                predicates.add(cb.greaterThanOrEqualTo(root.get("date"), filter.minDate()));
             }
-
             if (filter.maxDate() != null) {
-                predicates.add(
-                        criteriaBuilder.lessThanOrEqualTo(
-                                root.get("date"),
-                                filter.maxDate()
-                        )
-                );
+                predicates.add(cb.lessThanOrEqualTo(root.get("date"), filter.maxDate()));
             }
 
             if (filter.completed() != null) {
-                predicates.add(
-                        criteriaBuilder.equal(
-                                root.get("completed"),
-                                filter.completed()
-                        )
-                );
+                predicates.add(cb.equal(root.get("completed"), filter.completed()));
             }
-
-            query.orderBy(
-                    criteriaBuilder.desc(root.get("date"))
-            );
 
             if (predicates.isEmpty()) {
-                return criteriaBuilder.conjunction();
+                return cb.conjunction();
             }
 
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+            return cb.and(predicates.toArray(new Predicate[0]));
         };
     }
 }

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "task")
+@Table(name = "tasks")
 public class Task implements Serializable {
 
     @Id

@@ -1,17 +1,14 @@
 package com.usuario.todolist.documentation;
 
-import com.usuario.todolist.dto.request.TaskCreateRequest;
-import com.usuario.todolist.dto.request.TaskPatchRequest;
+import com.usuario.todolist.dto.request.*;
 import com.usuario.todolist.dto.response.TaskResponse;
-import com.usuario.todolist.dto.request.TaskUpdateRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Window;
 import org.springframework.http.ResponseEntity;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Tag(name = "Tasks", description = "API para gestión y administración de tareas del Todo List")
 @ApiStandardResponse
@@ -65,21 +62,14 @@ public interface TaskApiDoc {
 
     @Operation(
             summary = "Ver todas o buscar tareas con filtros",
-            description = "Permite ver todas o buscar y filtrar tareas por diferentes criterios. Todos los filtros son opcionales y se combinan entre si."
+            description = """
+                    Permite buscar tareas utilizando Keyset Pagination (basado en cursores).
+                    Todos los filtros son opcionales. El cursor se compone de 'lastId' y 'lastDate'.
+                    """
     )
     @ApiResponse(responseCode = "200", description = "Listado de tareas que coinciden con los filtros")
-    ResponseEntity<List<TaskResponse>> find(
-
-            @Parameter(description = "Filtrar por descripción que contenga el texto", example = "comprar pan")
-            String description,
-
-            @Parameter(description = "Filtrar tareas con fecha mayor o igual a la indicada", example = "2026-01-01")
-            LocalDate minDate,
-
-            @Parameter(description = "Filtrar tareas con fecha menor o igual a la indicada", example = "2026-12-31")
-            LocalDate maxDate,
-
-            @Parameter(description = "Filtrar solo tareas completadas o pendientes", example = "false")
-            Boolean completed
+    ResponseEntity<Window<TaskResponse>> find(
+            @ParameterObject TaskFilterRequest filter,
+            @ParameterObject CursorPageRequest page
     );
 }

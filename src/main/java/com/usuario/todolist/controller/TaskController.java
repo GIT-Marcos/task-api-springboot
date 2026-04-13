@@ -1,20 +1,15 @@
 package com.usuario.todolist.controller;
 
 import com.usuario.todolist.documentation.TaskApiDoc;
-import com.usuario.todolist.dto.request.TaskFilterRequest;
-import com.usuario.todolist.dto.request.TaskPatchRequest;
+import com.usuario.todolist.dto.request.*;
 import com.usuario.todolist.dto.response.TaskResponse;
-import com.usuario.todolist.dto.request.TaskCreateRequest;
-import com.usuario.todolist.dto.request.TaskUpdateRequest;
 import com.usuario.todolist.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Window;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -51,14 +46,9 @@ public class TaskController implements TaskApiDoc {
         return ResponseEntity.noContent().build();
     }
 
-    // ========================= LECTURA ============================
-
     @GetMapping
-    public ResponseEntity<List<TaskResponse>> find(@RequestParam(required = false) String description,
-                                                            @RequestParam(required = false) LocalDate minDate,
-                                                            @RequestParam(required = false) LocalDate maxDate,
-                                                            @RequestParam(required = false) Boolean completed) {
-        TaskFilterRequest filter = new TaskFilterRequest(description, minDate, maxDate, completed);
-        return ResponseEntity.ok(serv.findByFilters(filter));
+    public ResponseEntity<Window<TaskResponse>> find(TaskFilterRequest filter, CursorPageRequest cpr) {
+        Window<TaskResponse> taskWindow = serv.findByFilters(filter, cpr);
+        return ResponseEntity.ok(taskWindow);
     }
 }
