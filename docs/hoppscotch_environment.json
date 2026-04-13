@@ -4,15 +4,15 @@
   "name": "TASK-API",
   "variables": [
     {
-      "key": "base_url",
+      "key": "render_base_url",
       "secret": false,
       "initialValue": "https://task-api-springboot.onrender.com/api/tasks",
       "currentValue": ""
     },
     {
-      "key": "filters",
+      "key": "local_base_url",
       "secret": false,
-      "initialValue": "/filters?",
+      "initialValue": "http://localhost:8080/api/tasks",
       "currentValue": ""
     }
   ]

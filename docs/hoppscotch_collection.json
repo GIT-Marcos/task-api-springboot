@@ -1,220 +1,557 @@
-{
-  "v": 11,
-  "name": "tasks",
-  "folders": [],
-  "requests": [
-    {
-      "v": "17",
-      "name": "Todas las tareas",
-      "method": "GET",
-      "endpoint": "<<base_url>>",
-      "params": [],
-      "headers": [],
-      "preRequestScript": "",
-      "testScript": "",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
+[
+  {
+    "v": 11,
+    "name": "tasks-render",
+    "folders": [],
+    "requests": [
+      {
+        "v": "17",
+        "name": "Todas las tareas",
+        "method": "GET",
+        "endpoint": "<<render_base_url>>",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
       },
-      "body": {
-        "contentType": null,
-        "body": null
+      {
+        "v": "17",
+        "name": "Traer completadas",
+        "method": "GET",
+        "endpoint": "<<render_base_url>>?completed=true",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
       },
-      "requestVariables": [],
-      "responses": {},
-      "description": null
+      {
+        "v": "17",
+        "name": "Traer no completadas",
+        "method": "GET",
+        "endpoint": "<<render_base_url>>?completed=false",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer por descripción",
+        "method": "GET",
+        "endpoint": "<<render_base_url>>?description=tarea",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer por fecha mínima",
+        "method": "GET",
+        "endpoint": "<<render_base_url>>?minDate=2026-01-01T12:30:30",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer por fecha máxima",
+        "method": "GET",
+        "endpoint": "<<render_base_url>>?maxDate=2027-01-01T12:30:30",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer por todos los filtros",
+        "method": "GET",
+        "endpoint": "<<render_base_url>>?description=tarea&minDate=2026-01-01T12:30:30&maxDate=2027-01-01T12:30:30&completed=false",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer con paginación completa",
+        "method": "GET",
+        "endpoint": "<<render_base_url>>?lastId=4&lastDate=2026-04-06T18:44:33&direction=ASC",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer con paginación incompleta",
+        "method": "GET",
+        "endpoint": "<<render_base_url>>?lastId=4&lastDate=2026-04-06T18:44:33&size=5&direction=ASC",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Crear tarea",
+        "method": "POST",
+        "endpoint": "<<render_base_url>>",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"description\": \"Tarea 1\"\n}"
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Completar tarea",
+        "method": "PUT",
+        "endpoint": "<<render_base_url>>/1",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"description\": \"Tarea 1\",\n  \"completed\": true\n}"
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Borrar tarea",
+        "method": "DELETE",
+        "endpoint": "<<render_base_url>>/1",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      }
+    ],
+    "auth": {
+      "authType": "none",
+      "authActive": true
     },
-    {
-      "v": "17",
-      "name": "Traer completadas",
-      "method": "GET",
-      "endpoint": "<<base_url>><<filters>>completed=true",
-      "params": [],
-      "headers": [],
-      "preRequestScript": "",
-      "testScript": "",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
-      },
-      "body": {
-        "contentType": null,
-        "body": null
-      },
-      "requestVariables": [],
-      "responses": {},
-      "description": null
-    },
-    {
-      "v": "17",
-      "name": "Traer no completadas",
-      "method": "GET",
-      "endpoint": "<<base_url>><<filters>>completed=false",
-      "params": [],
-      "headers": [],
-      "preRequestScript": "",
-      "testScript": "",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
-      },
-      "body": {
-        "contentType": null,
-        "body": null
-      },
-      "requestVariables": [],
-      "responses": {},
-      "description": null
-    },
-    {
-      "v": "17",
-      "endpoint": "<<base_url>><<filters>>description=tarea",
-      "name": "Traer por descripción",
-      "params": [],
-      "headers": [],
-      "method": "GET",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
-      },
-      "preRequestScript": "",
-      "testScript": "",
-      "body": {
-        "contentType": null,
-        "body": null
-      },
-      "requestVariables": [],
-      "responses": {}
-    },
-    {
-      "v": "17",
-      "endpoint": "<<base_url>><<filters>>minDate=2026-01-01",
-      "name": "Traer por fecha mínima",
-      "params": [],
-      "headers": [],
-      "method": "GET",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
-      },
-      "preRequestScript": "",
-      "testScript": "",
-      "body": {
-        "contentType": null,
-        "body": null
-      },
-      "requestVariables": [],
-      "responses": {}
-    },
-    {
-      "v": "17",
-      "endpoint": "<<base_url>><<filters>>maxDate=2027-01-01",
-      "name": "Traer por fecha máxima",
-      "params": [],
-      "headers": [],
-      "method": "GET",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
-      },
-      "preRequestScript": "",
-      "testScript": "",
-      "body": {
-        "contentType": null,
-        "body": null
-      },
-      "requestVariables": [],
-      "responses": {}
-    },
-    {
-      "v": "17",
-      "endpoint": "<<base_url>><<filters>>description=tarea&minDate=2026-01-01&maxDate=2027-01-01&completed=false",
-      "name": "Traer por todos los filtros",
-      "params": [],
-      "headers": [],
-      "method": "GET",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
-      },
-      "preRequestScript": "",
-      "testScript": "",
-      "body": {
-        "contentType": null,
-        "body": null
-      },
-      "requestVariables": [],
-      "responses": {}
-    },
-    {
-      "v": "17",
-      "name": "Crear tarea",
-      "method": "POST",
-      "endpoint": "<<base_url>>",
-      "params": [],
-      "headers": [],
-      "preRequestScript": "",
-      "testScript": "",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
-      },
-      "body": {
-        "contentType": "application/json",
-        "body": "{\n  \"description\": \"Tarea 1\"\n}"
-      },
-      "requestVariables": [],
-      "responses": {},
-      "description": null
-    },
-    {
-      "v": "17",
-      "name": "Completar tarea",
-      "method": "PUT",
-      "endpoint": "<<base_url>>/1",
-      "params": [],
-      "headers": [],
-      "preRequestScript": "",
-      "testScript": "",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
-      },
-      "body": {
-        "contentType": "application/json",
-        "body": "{\n  \"description\": \"Tarea 1\",\n  \"completed\": true\n}"
-      },
-      "requestVariables": [],
-      "responses": {},
-      "description": null
-    },
-    {
-      "v": "17",
-      "name": "Borrar tarea",
-      "method": "DELETE",
-      "endpoint": "<<base_url>>/1",
-      "params": [],
-      "headers": [],
-      "preRequestScript": "",
-      "testScript": "",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
-      },
-      "body": {
-        "contentType": null,
-        "body": null
-      },
-      "requestVariables": [],
-      "responses": {},
-      "description": null
-    }
-  ],
-  "auth": {
-    "authType": "none",
-    "authActive": true
+    "headers": [],
+    "variables": [],
+    "description": ""
   },
-  "headers": [],
-  "variables": [],
-  "description": ""
-}
+  {
+    "v": 11,
+    "name": "tasks-local",
+    "folders": [],
+    "requests": [
+      {
+        "v": "17",
+        "name": "Todas las tareas",
+        "method": "GET",
+        "endpoint": "<<local_base_url>>",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer completadas",
+        "method": "GET",
+        "endpoint": "<<local_base_url>>?completed=true",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer no completadas",
+        "method": "GET",
+        "endpoint": "<<local_base_url>>?completed=false",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer por descripción",
+        "method": "GET",
+        "endpoint": "<<local_base_url>>?description=tarea",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer por fecha mínima",
+        "method": "GET",
+        "endpoint": "<<local_base_url>>?minDate=2026-01-01T12:30:30",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer por fecha máxima",
+        "method": "GET",
+        "endpoint": "<<local_base_url>>?maxDate=2027-01-01T12:30:30",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer por todos los filtros",
+        "method": "GET",
+        "endpoint": "<<local_base_url>>?description=tarea&minDate=2026-01-01T12:30:30&maxDate=2027-01-01T12:30:30&completed=false",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer con paginación completa",
+        "method": "GET",
+        "endpoint": "<<local_base_url>>?lastId=4&lastDate=2026-04-06T18:44:33&size=5&direction=ASC",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Traer con paginación incompleta",
+        "method": "GET",
+        "endpoint": "<<local_base_url>>?lastId=4&lastDate=2026-04-06T18:44:33&direction=DESC",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Crear tarea",
+        "method": "POST",
+        "endpoint": "<<local_base_url>>",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "basic",
+          "username": "",
+          "password": "",
+          "authActive": false
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"description\": \"Tarea 1\"\n}"
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Actualizar tarea",
+        "method": "PUT",
+        "endpoint": "<<local_base_url>>/1",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"description\": \"Tarea actualizada\",\n  \"completed\": true\n}"
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Completar tarea",
+        "method": "PATCH",
+        "endpoint": "<<local_base_url>>/2",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"completed\": true\n}"
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Borrar tarea",
+        "method": "DELETE",
+        "endpoint": "<<local_base_url>>/1",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": null,
+          "body": null
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      }
+    ],
+    "auth": {
+      "authType": "none",
+      "authActive": true
+    },
+    "headers": [],
+    "variables": [],
+    "description": ""
+  }
+]
